@@ -1,0 +1,10 @@
+source loadenvs
+export CESMDATAROOT=$WORK/cesm
+export CSMDATA=$WORK/cesm/inputdata
+#2017b
+source $HOME/loadenvs
+export NCARG_ROOT=/usr/local/software/jureca/Stages/2017b/software/NCL/6.4.0-intel-para-2017b
+export PATH=$NCARG_ROOT/bin:$PATH
+export NETCDF=/usr/local/software/jureca/Stages/2017b/software/netCDF/4.4.1.1-ipsmpi-2017b
+export NETCDF_FORTRAN=/usr/local/software/jureca/Stages/2017b/software/netCDF-Fortran/4.4.4-ipsmpi-2017b
+export PNETCDF=/usr/local/software/jureca/Stages/2017b/software/parallel-netcdf/1.8.1-ipsmpi-2017b

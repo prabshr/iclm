@@ -1,0 +1,39 @@
+#Porting of CLM5.0 to JURECA
+#Author: P. Shrestha
+#Date: 15-02-2018
+#---------------------------------------
+CLM Inputdata
+svn ls https://svn-ccsm-inputdata.cgd.ucar.edu/trunk/inputdata
+.subversion/servers to store password
+$WORK/cesm/inputdata/
+#---------------------------------------
+#
+iclm consists of two main scripts
+ 1) mksurfdata
+  -> To create domain, grid and surface data to run CLM
+  -> Requires CLM Inputdata
+  -> A procedure to create point data is shown as an example
+
+ 2) setupclm
+  -> For setting up a test case
+  -> This script can also be combined for case build and case submit
+#---------------------------------------
+#
+Others:
+#
+ profile_append and loadenvs
+ --> necessary Machine configurations for JSC JURECA
+ 
+ copymaps.sh
+ --> for repeated creations of mapping data for same domain, copies the maps from existing directory
+     this has to commented in/out in the mksurfdata script
+
+ orig.src
+ --> Keeping a backup of original source codes of clm5.0
+
+ mod.src
+ --> Keep here any source codes that you want to modify in CLM
+
+#---------------------------------------
+#
+

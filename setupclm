@@ -1,0 +1,92 @@
+#!/bin/csh
+# Author: P. Shrestha
+#
+#-----User Parameters----------------------
+setenv CTSM     $HOME/clm5.0
+setenv MODSRC   $HOME/misc/mod.src
+setenv ORGSRC   $HOME/misc/orig.src
+setenv CTSM_case Flkbg
+setenv GRIDNAME 1x1_falkenberg
+setenv CDATE    180213 #`date +%y%m%d`
+setenv ATMDOM  domain.lnd.domain.lnd.${GRIDNAME}_noocean.nc_domain.ocn_noocean.nc.${CDATE}.nc 
+#
+setenv NETCDF /usr/local/software/jureca/Stage3/software/Toolchain/gpsolf/2015.06/netCDF/4.3.2/
+#
+set compsetname = I1PtClm50SpGs #I2000Clm50Sp #I1PtClm50SpGs
+set yyyy_start = 2008
+set mm_start   = 01
+set dd_start   = 01
+set yyyy_end = 2014
+set stop_option = nyears
+set stop_optionVal = 7
+set nATM_CPL = 24
+# Customizing PE Layout
+set NPROC = 24
+set NPROC_LND = 24
+set NTHRD_LND = 1
+set NROOT_LND = 0
+#-----User Parameters----------------------
+
+if ( -d $HOME/$CTSM_case ) then
+  echo "------------------------------------------"
+  echo "Removing existing case ..."
+  echo "------------------------------------------"
+  rm -rf $HOME/$CTSM_case
+  rm -rf $WORK/$CTSM_case
+endif
+
+echo "------------------------------------------"
+echo "Create New Case ..."
+echo "------------------------------------------"
+cd $CTSM/cime/scripts
+cp $MODSRC/namelist_defaults_usr_files.xml $CTSM/bld/namelist_files/
+cp $MODSRC/config_compilers.xml $CTSM/cime/config/cesm/machines/
+cp $MODSRC/config_batch.xml $CTSM/cime/config/cesm/machines/
+cp $MODSRC/Depends.intel $CTSM/cime/config/cesm/machines/
+./create_newcase --case $HOME/Flkbg --res CLM_USRDAT --compset $compsetname --run-unsupported
+
+echo "------------------------------------------"
+echo "XML update and case setup ..."
+echo "------------------------------------------"
+cd $HOME/$CTSM_case
+
+#env_machine_pes.xml
+./xmlchange TOTALPES=$NPROC
+
+#./xmlchange NTASKS_LND=$NPROC_LND
+#./xmlchange NTHRDS_LND=$NTHRD_LND
+#./xmlchange ROOTPE_LND=$NROOT_LND
+#env_build.xml
+#./xmlchange MASK_GRID=$LMASK
+
+#env_run.xml
+./xmlchange CLM_USRDAT_NAME=$GRIDNAME
+./xmlchange ATM_DOMAIN_FILE=$ATMDOM,LND_DOMAIN_FILE=$ATMDOM
+./xmlchange DATM_MODE=CLM1PT
+./xmlchange DATM_CLMNCEP_YR_START=$yyyy_start,DATM_CLMNCEP_YR_END=$yyyy_end
+./xmlchange DATM_CLMNCEP_YR_ALIGN=$yyyy_start
+./xmlchange CLM_BLDNML_OPTS="-sim_year 2000 "
+./xmlchange RUN_STARTDATE=$yyyy_start"-"$mm_start"-"$dd_start
+./xmlchange RUN_REFDATE=$yyyy_start"-"$mm_start"-"$dd_start
+./xmlchange STOP_OPTION=$stop_option
+./xmlchange STOP_N=$stop_optionVal
+./xmlchange ATM_NCPL=$nATM_CPL
+./xmlchange CLM_CO2_TYPE="constant"
+./xmlchange CCSM_CO2_PPMV="367.0"
+./xmlchange CLM_FORCE_COLDSTART="off"
+./case.setup
+
+echo "------------------------------------------"
+echo "Update the SourceMods/src.clm   "
+echo "------------------------------------------"
+cp $MODSRC/*.F90 $HOME/$CTSM_case/SourceMods/src.clm
+
+echo "------------------------------------------"
+echo "Exiting before Case Build ..."
+echo "Update the user_nl_xxxx files if necesseary ..."
+echo "Usage: ./case.build"
+echo "------------------------------------------"
+
+cp $MODSRC/user_nl_clm $HOME/$CTSM_case
+#./case.build
+exit 0

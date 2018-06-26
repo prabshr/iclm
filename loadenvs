@@ -1,0 +1,30 @@
+#!/bin/tcsh
+#2018-02-13
+#USAGE="source $0"
+
+module purge
+
+
+# Only necessary if modules are missing after maintenence
+module use /usr/local/software/jureca/OtherStages
+module load Stages/2017b
+
+# basic toolchain, latest Intel compilers and ParaStation MPI
+module load Intel
+
+module load ParaStationMPI
+
+module load ESMF
+
+module load NCO
+
+module load Perl
+
+module load CMake
+
+module load parallel-netcdf
+
+module load imkl
+
+module load NCL
+module li

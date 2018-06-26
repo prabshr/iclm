@@ -1,0 +1,108 @@
+#!/bin/csh
+#Author: P. Shrestha
+
+#Based on README file
+#Set name of grid to use and the creation date to be used later...
+setenv GRIDNAME 1x1_falkenberg
+setenv CDATE    `date +%y%m%d`
+setenv pt_lat    52.28333
+setenv pt_lon    14.20
+setenv CTSM     $HOME/clm5.0
+#-----Libraries
+#Included in profile------
+#export NCARG_ROOT="/homea/hbn33/hbn331/local/ncl_6.1.2_nodap"
+#export PATH=$NCARG_ROOT/bin:$PATH
+#export CESMDATAROOT=$WORK/cesm/inputdata
+#export CSMDATA=$WORK/cesm/inputdata  #for making surface data
+setenv ESMFBIN_PATH "/usr/local/software/jureca/Stages/2017b/software/ESMF/7.0.1-intel-para-2017b/bin"
+setenv NETCDF $NETCDF_FORTRAN
+setenv LIB_NETCDF $NETCDF_FORTRAN"/lib"
+setenv INC_NETCDF $NETCDF_FORTRAN"/include"
+#-----Libraries
+
+#-------Code Updates
+#Add
+#LDFLAGS := $(shell $(LIB_NETCDF)/../bin/nf-config --flibs)
+#clm5.0/cime/tools/mapping/gen_domain_files/src/Makefile
+#--------------------
+cd $CTSM/tools
+echo "-------------------------------------"
+echo "SCRIP grid and atm to ocn mapping file"
+echo "-------------------------------------"
+rm mkmapdata/map_*
+rm mkmapgrids/SCRIPgrid_*
+cd mkmapdata
+./mknoocnmap.pl -p $pt_lat,$pt_lon -n $GRIDNAME
+# Set pointer to MAPFILE that will be used in step (6)
+setenv MAPFILE `pwd`/map_${GRIDNAME}_noocean_to_${GRIDNAME}_nomask_aave_da_${CDATE}.nc
+setenv GRIDFILE `pwd`/../mkmapgrids/SCRIPgrid_${GRIDNAME}_nomask_c${CDATE}.nc
+cd ..
+#2.) skip
+#3.) skip
+# exit 0
+
+echo "-------------------------------------"
+echo "Generate domain file for datm and CLM"
+echo "-------------------------------------"
+setenv CIMEROOT $CTSM/cime
+#Install
+setenv FC ifort
+cd $CIMEROOT/tools/mapping/gen_domain_files/src
+rm env_mach_specific.xml 
+../../../configure --macros-format Makefile --mpilib mpi-serial
+source ./.env_mach_specific.csh
+#
+gmake clean
+echo $PWD
+gmake
+cd ..
+rm domain.*
+setenv OCNDOM domain.ocn_noocean.nc
+setenv ATMDOM domain.lnd.{$GRIDNAME}_noocean.nc
+./gen_domain -m $MAPFILE -o $OCNDOM -l $ATMDOM
+#exit 0
+
+echo "-------------------------------------"
+echo "Mapping files needed for mksurfdata_map"
+echo "-------------------------------------"
+cd $CTSM/tools
+cd mkmapdata
+#First generate list of mapping files that needs to be downloaded (Generates clm.input_data_list)
+./mkmapdata.sh -r $GRIDNAME -f $GRIDFILE -t regional -l
+cp clm.input_data_list .input_data_list
+
+#CPS Password authentication issue Check if mapping files needs to be downloaded
+#CPS cd $CIMEROOT/scripts/Tools
+#CPS ./check_input_data --i $WORK/cesm/inputdata --data-list-dir $CTSM/tools/mkmapdata/ --download
+echo "Copying existing mapping files....."
+#cd $CSMDATA/lnd/clm2/mappingdata/maps/${GRIDNAME}
+cd $HOME/misc
+./copymaps.sh
+
+#Generate mapping files
+cd $CTSM/tools
+cd mkmapdata
+rm clm.input_data_list .input_data_list
+./mkmapdata.sh -r $GRIDNAME -f $GRIDFILE -t regional
+cd ../..
+#5.) skip
+
+echo "-------------------------------------"
+echo "Create surface dataset for CLM"
+echo "-------------------------------------"
+cd $CTSM/tools
+cd mksurfdata_map/src
+gmake clean
+gmake
+cd ..
+./mksurfdata.pl -r usrspec -usr_gname $GRIDNAME -usr_gdate $CDATE -no-crop -l $CSMDATA -allownofile -y 2000
+#8.) skip
+#9.) skip
+
+#Clean Up
+mv surfdata_* $HOME
+mv $CIMEROOT/tools/mapping/gen_domain_files/domain.lnd.* $HOME
+rm $CIMEROOT/tools/mapping/gen_domain_files/*.nc
+rm ../mkmapdata/map_*.nc
+rm ../mkmapgrids/SCRIPgrid_*
+exit 0
