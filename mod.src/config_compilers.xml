@@ -509,6 +509,31 @@ using a fortran linker.
   </LDFLAGS>
 </compiler>
 
+<compiler MACH="juwels" COMPILER="intel">
+  <CFLAGS>
+    <append DEBUG="FALSE"> -O2 </append>
+  </CFLAGS>
+  <CONFIG_ARGS>
+    <base> --host=Linux </base>
+  </CONFIG_ARGS>
+  <CPPDEFS>
+    <append> -DLINUX </append>
+  </CPPDEFS>
+  <FFLAGS>
+    <append DEBUG="FALSE"> -O2 </append>
+  </FFLAGS>
+  <NETCDF_PATH> $ENV{NETCDF}</NETCDF_PATH>
+  <PNETCDF_PATH> $ENV{PNETCDF}</PNETCDF_PATH>
+  <NETCDF_C_PATH> $ENV{NETCDF}</NETCDF_C_PATH>
+  <NETCDF_FORTRAN_PATH> $ENV{NETCDF_FORTRAN}</NETCDF_FORTRAN_PATH>
+  <SLIBS>
+    <append>$(SHELL $(NETCDF_PATH)/bin/nc-config --flibs)</append>
+  </SLIBS>
+  <LDFLAGS>
+    <append>-mkl </append>
+  </LDFLAGS>
+</compiler>
+
 <compiler MACH="constance" COMPILER="intel">
   <CFLAGS>
     <append DEBUG="FALSE"> -O2 </append>

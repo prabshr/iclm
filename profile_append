@@ -1,10 +1,27 @@
-source loadenvs
+#--------------
+#JURECA machine
+#--------------
+source loadenvsJURECA
 export CESMDATAROOT=$WORK/cesm
 export CSMDATA=$WORK/cesm/inputdata
-#2017b
-source $HOME/loadenvs
+#2017b JURECA
+source $HOME/loadenvsJURECA
 export NCARG_ROOT=/usr/local/software/jureca/Stages/2017b/software/NCL/6.4.0-intel-para-2017b
 export PATH=$NCARG_ROOT/bin:$PATH
 export NETCDF=/usr/local/software/jureca/Stages/2017b/software/netCDF/4.4.1.1-ipsmpi-2017b
 export NETCDF_FORTRAN=/usr/local/software/jureca/Stages/2017b/software/netCDF-Fortran/4.4.4-ipsmpi-2017b
 export PNETCDF=/usr/local/software/jureca/Stages/2017b/software/parallel-netcdf/1.8.1-ipsmpi-2017b
+#--------------
+#JUWELS machine
+#--------------
+source loadenvsJUWELS
+export CESMDATAROOT=$WORK/cesm
+export CSMDATA=$WORK/cesm/inputdata
+#
+source $HOME/loadenvsJUWELS
+export NCARG_ROOT=/gpfs/software/juwels/stages/2018a/software/NCL/6.4.0-intel-para-2018a
+export PATH=$NCARG_ROOT/bin:$PATH
+export NETCDF=/gpfs/software/juwels/stages/2018a/software/netCDF/4.6.1-ipsmpi-2018a
+export NETCDF_FORTRAN=/gpfs/software/juwels/stages/2018a/software/netCDF-Fortran/4.4.4-ipsmpi-2018a
+export PNETCDF=/gpfs/software/juwels/stages/2018a/software/parallel-netcdf/1.9.0-ipsmpi-2018a
+#--------------

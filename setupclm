@@ -3,14 +3,13 @@
 #
 #-----User Parameters----------------------
 setenv CTSM     $HOME/clm5.0
-setenv MODSRC   $HOME/misc/mod.src
-setenv ORGSRC   $HOME/misc/orig.src
+setenv MODSRC   $HOME/iclm/mod.src
+setenv ORGSRC   $HOME/iclm/orig.src
 setenv CTSM_case Flkbg
 setenv GRIDNAME 1x1_falkenberg
 setenv CDATE    180213 #`date +%y%m%d`
 setenv ATMDOM  domain.lnd.domain.lnd.${GRIDNAME}_noocean.nc_domain.ocn_noocean.nc.${CDATE}.nc 
 #
-setenv NETCDF /usr/local/software/jureca/Stage3/software/Toolchain/gpsolf/2015.06/netCDF/4.3.2/
 #
 set compsetname = I1PtClm50SpGs #I2000Clm50Sp #I1PtClm50SpGs
 set yyyy_start = 2008

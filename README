@@ -1,6 +1,8 @@
 #Porting of CLM5.0 to JURECA
 #Author: P. Shrestha
 #Date: 15-02-2018
+#Porting of CLM5.0 to JUWELS added
+#Date: 09-08-2018 (P. Shreshta)
 #---------------------------------------
 CLM Inputdata
 svn ls https://svn-ccsm-inputdata.cgd.ucar.edu/trunk/inputdata
@@ -23,6 +25,11 @@ Others:
 #
  profile_append and loadenvs
  --> necessary Machine configurations for JSC JURECA
+     append the machine specific text in profile_append to your .profile
+     copy the machine specific loadenvs to $HOME directory
+
+ .cimeXXXXX
+ --> Copy the machine specific folder to $HOME directory and rename it to .cime
  
  copymaps.sh
  --> for repeated creations of mapping data for same domain, copies the maps from existing directory

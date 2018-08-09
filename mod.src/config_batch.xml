@@ -311,6 +311,13 @@
     </queues>
   </batch_system>
 
+  <batch_system MACH="juwels" type="slurm">
+    <batch_submit>sbatch</batch_submit>
+    <queues>
+      <queue walltimemin="0" walltimemax="00:59:00" nodemin="0" nodemax="10" default="true">batch</queue>
+    </queues>
+  </batch_system>
+
   <batch_system MACH="olympus" type="slurm">
     <batch_submit>sbatch</batch_submit>
     <queues>
