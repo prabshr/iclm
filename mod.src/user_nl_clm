@@ -20,7 +20,7 @@
 ! Set glc_do_dynglacier  with GLC_TWO_WAY_COUPLING               env variable
 !----------------------------------------------------------------------------------
  
- finidat = '/work/hbn33/hbn331/cesm/inputdata/restarts_clm50/Flkbg.clm2.r.2009-01-01-00000_04.nc'
+ finidat = '$WORK/cesm/inputdata/restarts_clm50/Flkbg.clm2.r.2009-01-01-00000_04.nc'
  irrigate = .false.
  hist_avgflag_pertape = 'A'
  hist_nhtfrq    =  -1

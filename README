@@ -4,12 +4,15 @@
 #Porting of CLM5.0 to JUWELS added
 #Date: 09-08-2018 (P. Shreshta)
 #---------------------------------------
-CLM Inputdata
+#CLM User Guide
+https://escomp.github.io/ctsm-docs/doc/build/html/users_guide/index.html
+#
+#CLM Inputdata
 svn ls https://svn-ccsm-inputdata.cgd.ucar.edu/trunk/inputdata
 .subversion/servers to store password
 $WORK/cesm/inputdata/
 #---------------------------------------
-#
+#About iclm
 iclm consists of two main scripts
  1) mksurfdata
   -> To create domain, grid and surface data to run CLM
@@ -30,6 +33,7 @@ Others:
 
  .cimeXXXXX
  --> Copy the machine specific folder to $HOME directory and rename it to .cime
+ --> Now done by setupclm itself
  
  copymaps.sh
  --> for repeated creations of mapping data for same domain, copies the maps from existing directory

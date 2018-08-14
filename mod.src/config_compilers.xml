@@ -521,6 +521,7 @@ using a fortran linker.
   </CPPDEFS>
   <FFLAGS>
     <append DEBUG="FALSE"> -O2 </append>
+    <append> -mcmodel medium </append>
   </FFLAGS>
   <NETCDF_PATH> $ENV{NETCDF}</NETCDF_PATH>
   <PNETCDF_PATH> $ENV{PNETCDF}</PNETCDF_PATH>
@@ -530,7 +531,7 @@ using a fortran linker.
     <append>$(SHELL $(NETCDF_PATH)/bin/nc-config --flibs)</append>
   </SLIBS>
   <LDFLAGS>
-    <append>-mkl </append>
+    <append> -mkl </append>
   </LDFLAGS>
 </compiler>
 
